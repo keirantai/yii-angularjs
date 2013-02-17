@@ -5,11 +5,11 @@
  * Date: 16/2/13
  * Time: 12:02 AM
  */
-class AHTML extends CHTML
+class AHtml extends CHtml
 {
     /**
      * Use to create HTML element with ng-app attribute. "html" element is the default element.
-     * @param string $appName
+     * @param string $appName Application/Component name. Default empty
      * @param string $tag
      * @param array $htmlOptions
      * @param bool $content
@@ -20,6 +20,19 @@ class AHTML extends CHTML
         // add ng-app tag to the element
         $htmlOptions = array_merge(array('ng-app'=>$appName), $htmlOptions);
         return self::tag($tag, $htmlOptions, $content, $closeTag);
+    }
+
+    /**
+     * Similar to ngApp() method but it only creates an open tag.
+     * @param string $appName Application/Component name. Default empty
+     * @param string $tag
+     * @param array $htmlOptions
+     * @return mixed
+     */
+    public static function ngOpenApp($appName='', $tag='html', $htmlOptions=array()) {
+        // add ng-app tag to the element
+        $htmlOptions = array_merge(array('ng-app'=>$appName), $htmlOptions);
+        return self::openTag($tag, $htmlOptions);
     }
 
     /**
@@ -37,6 +50,18 @@ class AHTML extends CHTML
     }
 
     /**
+     * Similar to ngController() method but it only creates an open tag.
+     * @param string $controllerName Controller name which uses to refer AngularJS controller in javascript
+     * @param string $tag Name of the HTML element with controller setup
+     * @param array $htmlOptions
+     * @return mixed
+     */
+    public static function ngOpenController($controllerName='DefaultCtrl', $tag='div', $htmlOptions=array()) {
+        $htmlOptions = array_merge(array('ng-controller'=>$controllerName), $htmlOptions);
+        return self::openTag($tag, $htmlOptions);
+    }
+
+    /**
      * Create an element with ng-repeat set. By default, the element is li.
      * @param string $repeatCondition The condition of the repeat element. e.g. friend in friendlist
      * @param string $tag The element which is used to multiple contents from the model according to the repeat condition
@@ -48,6 +73,18 @@ class AHTML extends CHTML
     public static function ngRepeat($repeatCondition='', $tag='li', $htmlOptions=array(), $content=false, $closeTag=true) {
         $htmlOptions = array_merge(array('ng-repeat'=>$repeatCondition), $htmlOptions);
         return self::tag($tag, $htmlOptions, $content, $closeTag);
+    }
+
+    /**
+     * Similar to ngRepeat() method but it only creates an open tag.
+     * @param string $repeatCondition The condition of the repeat element. e.g. friend in friendlist
+     * @param string $tag The element which is used to multiple contents from the model according to the repeat condition
+     * @param array $htmlOptions
+     * @return mixed
+     */
+    public static function ngOpenRepeat($repeatCondition='', $tag='li', $htmlOptions=array()) {
+        $htmlOptions = array_merge(array('ng-repeat'=>$repeatCondition), $htmlOptions);
+        return self::openTag($tag, $htmlOptions);
     }
 
     /**
@@ -149,6 +186,18 @@ class AHTML extends CHTML
             'type'=>'button',
         ), $htmlOptions);
         return self::ngClick($action, 'button', $htmlOptions, $label, true);
+    }
+
+    /**
+     * Create an anchor (link) element with ng-action.
+     * @param string $text Content of the link
+     * @param string $action The action will be triggered when click on it.
+     * @param array $htmlOptions
+     * @return mixed
+     */
+    public static function ngLink($text='link', $action='', $htmlOptions=array()) {
+        $htmlOptions = array_merge(array('href'=>'#'), $htmlOptions);
+        return self::ngClick($action, 'a', $htmlOptions, $text, true);
     }
 
     /**
